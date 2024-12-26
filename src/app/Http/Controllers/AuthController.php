@@ -33,11 +33,21 @@ class AuthController extends Controller
         return redirect()->route('login');  // ログインページにリダイレクト
     }
 
-
-    
     // ログインページの表示
     public function login()
     {
         return view('auth.login');
+    }
+
+    // ログアウト処理
+    public function logout(Request $request)
+    {
+        Auth::logout();  // ログアウト
+
+        $request->session()->invalidate();  // セッションの無効化
+
+        $request->session()->regenerateToken();  // セキュリティ対策
+
+        return redirect('/');  // トップページにリダイレクト
     }
 }
