@@ -15,7 +15,7 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->bigIncrements('id'); // PRIMARY KEY
-            $table->string('user_name', 255)->nullable()->change();
+            $table->string('user_name', 255)->nullable();
             $table->string('email', 255)->unique()->notNullable(); // UNIQUE and NOT NULL
             $table->string('password', 255)->notNullable(); // NOT NULL
             $table->string('postal_code', 10)->nullable(); // Postal code (nullable)

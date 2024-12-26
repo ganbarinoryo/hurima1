@@ -30,7 +30,7 @@ class AuthController extends Controller
         ]);
 
         // 登録後、ログインページにリダイレクト
-        return redirect()->route('auth.login');  // ログインページにリダイレクト
+        return redirect()->route('login');  // ログインページにリダイレクト
     }
 
 
