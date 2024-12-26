@@ -12,7 +12,7 @@
 
     <header class="header">
         <div class="header__inner">
-            <a class="header__logo" href="">
+            <a class="header__logo" href="/">
                 <img src="{{ asset ('images/logo.png') }} " alt="コーチテック" >
             </a>
         </div>
@@ -43,7 +43,7 @@
             <div class="form__group-content">
                 <p>パスワード</p>
                 <div class="form__input--text">
-                    <input type="email" name="password" value="{{ old('password') }}" class="@error('password') is-invalid @enderror"/>
+                    <input type="password" name="password" value="{{ old('password') }}" class="@error('password') is-invalid @enderror"/>
                 </div>
                 <div class="form__error">
                 <!--バリデーション追加してから記述-->

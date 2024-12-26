@@ -16,10 +16,12 @@ use App\Http\Controllers\AuthController;
 |
 */
 
+// トップページ
 Route::get('/', [TopController::class, 'top']);
 
-// 会員登録ページ（登録フォームの表示）
-Route::get('/register', [AuthController::class, 'register']);
+//会員登録（GET）
+Route::get('/auth/register', [AuthController::class, 'register']);
+// 会員登録処理（POST）
+Route::post('/auth/register', [AuthController::class, 'registerSubmit']);
 
-// ログインページ（ログインフォームの表示）
-Route::get('/login', [AuthController::class, 'login']);
+Route::get('/auth/login', [AuthController::class, 'login']);
