@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TopController;
+use App\Http\Controllers\AuthController;
 
 
 /*
@@ -16,3 +17,9 @@ use App\Http\Controllers\TopController;
 */
 
 Route::get('/', [TopController::class, 'top']);
+
+// 会員登録ページ（登録フォームの表示）
+Route::get('/register', [AuthController::class, 'register']);
+
+// ログインページ（ログインフォームの表示）
+Route::get('/login', [AuthController::class, 'login']);
