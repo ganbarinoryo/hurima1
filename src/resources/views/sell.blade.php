@@ -14,6 +14,23 @@
             <a class="header__logo" href="">
                 <img src="{{ asset('images/logo.png') }}" alt="コーチテック" >
             </a>
+
+            <!-- 検索バー -->
+            <div class="search-bar">
+                <input type="text" placeholder="なにをお探しですか？" class="search-input">
+            </div>
+
+            <nav class="nav">
+                @guest
+                    <a href="/login" class="nav__link__login">ログイン</a>
+                    <a href="/register" class="nav__link__register">会員登録</a>
+                @else
+                    <a href="/logout" class="nav__link__logout">ログアウト</a>
+                    <a href="/mypage" class="nav__link__mypage">マイページ</a>
+                @endguest
+                <a href="/sell" class="nav__link__sell">出品</a>
+            </nav>
+
         </div>
     </header>
 
