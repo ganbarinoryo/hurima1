@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TopController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\SellController;
+use App\Http\Controllers\MypageController;
+use App\Http\Controllers\ProfileController;
 
 
 /*
@@ -25,10 +27,16 @@ Route::get('/auth/register', [AuthController::class, 'register']);
 // 会員登録処理（POST）
 Route::post('/auth/register', [AuthController::class, 'registerSubmit']);
 
-//ログイン・ログアウト機能
+// ログイン・ログアウト機能
 Route::get('/auth/login', [AuthController::class, 'login']);
 Route::post('/auth/logout', [AuthController::class, 'logout']);
 
-//出品ページ
+//  出品ページ
 Route::get('/sell', [SellController::class, 'sell']);
+//Route::store('/sell', [SellController::class, 'store']);
 
+// マイページ
+Route::get('/mypage', [MypageController::class, 'mypage']);
+
+// プロフィール編集ページ
+Route::get('/mypage/profile', [ProfileController::class, 'profile']);

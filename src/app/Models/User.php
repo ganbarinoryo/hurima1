@@ -43,7 +43,8 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function items()
+    //Itemsテーブルと紐付け
+    public function item()
     {
         return $this->hasMany(Item::class);
     }

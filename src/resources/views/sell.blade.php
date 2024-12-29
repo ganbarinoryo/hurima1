@@ -23,7 +23,7 @@
 
     <div class="flex__sell__content">
 
-    <form action="/sell" method="POST">
+    <form action="/sell" method="STORE">
 
         <div class="form__group">
             <div class="form__group-content">
