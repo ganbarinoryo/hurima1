@@ -39,15 +39,18 @@ class AuthController extends Controller
         return view('auth.login');
     }
 
-    // ログアウト処理
     public function logout(Request $request)
     {
-        Auth::logout();  // ログアウト
+        // ユーザーをログアウト
+        Auth::logout();
 
-        $request->session()->invalidate();  // セッションの無効化
+        // セッションを無効化
+        $request->session()->invalidate();
 
-        $request->session()->regenerateToken();  // セキュリティ対策
+        // セッションの再生成
+        $request->session()->regenerateToken();
 
-        return redirect('/');  // トップページにリダイレクト
+        // トップページにリダイレクト
+        return redirect('/');
     }
 }

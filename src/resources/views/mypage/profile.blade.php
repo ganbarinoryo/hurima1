@@ -11,7 +11,7 @@
 
     <header class="header">
         <div class="header__inner">
-            <a class="header__logo" href="">
+            <a class="header__logo" href="/">
                 <img src="{{ asset('images/logo.png') }}" alt="コーチテック" >
             </a>
             
@@ -25,7 +25,13 @@
                     <a href="/login" class="nav__link__login">ログイン</a>
                     <a href="/register" class="nav__link__register">会員登録</a>
                 @else
-                    <a href="/logout" class="nav__link__logout">ログアウト</a>
+                    <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                        ログアウト
+                    </a>
+                    <form id="logout-form" method="POST" action="{{ route('logout') }}" style="display: none;">
+                        @csrf
+                        @method('DELETE')
+                    </form>
                     <a href="/mypage" class="nav__link__mypage">マイページ</a>
                 @endguest
                 <a href="/sell" class="nav__link__sell">出品</a>

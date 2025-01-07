@@ -9,11 +9,10 @@
     <link rel="stylesheet" href="{{ asset('css/top.css') }}" />
 </head>
 <body>
-    
     <header class="header">
         <div class="header__inner">
             <a class="header__logo" href="/">
-                <img src="{{ asset('images/logo.png') }}" alt="コーチテック" >
+                <img src="{{ asset('images/logo.png') }}" alt="コーチテック">
             </a>
             
             <!-- 検索バー -->
@@ -27,13 +26,17 @@
                     <a href="/login" class="nav__link__login">ログイン</a>
                     <a href="/register" class="nav__link__register">会員登録</a>
                 @else
-                    <a href="/logout" class="nav__link__logout">ログアウト</a>
+                    <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                        ログアウト
+                    </a>
+                    <form id="logout-form" method="POST" action="{{ route('logout') }}" style="display: none;">
+                        @csrf
+                        @method('DELETE')
+                    </form>
                     <a href="/mypage" class="nav__link__mypage">マイページ</a>
                 @endguest
                 <a href="/sell" class="nav__link__sell">出品</a>
             </nav>
-
-
         </div>
     </header>
 
@@ -44,7 +47,6 @@
         </section>
 
         <section class="products">
-
             <div class="product-item">
                 <img src="" alt="商品画像">
                 <p>商品名1</p>
@@ -93,6 +95,6 @@
                 <p>価格</p>
             </div>
         </section>
-    
+    </main>
 </body>
 </html>

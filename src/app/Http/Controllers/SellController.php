@@ -5,36 +5,51 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Item;
+use App\Models\ItemImages;  // 修正：ItemImagesに変更
 
 class SellController extends Controller
 {
     public function sell()
-        {
-            return view('sell');
-        }
+    {
+        return view('sell');
+    }
 
     public function store(Request $request)
-        {
-            // バリデーション
-            $validated = $request->validate([
-                'product_name' => 'required|string|max:255',
-                'category' => 'nullable|string|max:255', // 必須ではない場合
-                'condition' => 'required|in:new,used', // enumで定義されている値を指定
-                'product_description' => 'required|string',
-                'price' => 'required|numeric|min:1|max:9999999.99',
+    {
+        // バリデーション
+        $request->validate([
+            'item_image' => 'required|image|mimes:jpg,jpeg,png,gif',  // 画像のバリデーション
+            'category' => 'required|string|max:255',
+            'condition' => 'required|string|max:255',
+            'item_name' => 'required|string|max:255',
+            'description' => 'required|string',
+            'price' => 'required|numeric|min:1',
+        ]);
+
+        // 新しい出品データをitemsテーブルに保存
+        $item = Item::create([
+            'user_id' => Auth::id(),  // ログインユーザーのIDをセット
+            'category' => $request->category,
+            'condition' => $request->condition,
+            'item_name' => $request->item_name,
+            'description' => $request->description,
+            'price' => $request->price,
+        ]);
+
+        // 画像がアップロードされている場合はitem_imagesテーブルに保存
+        if ($request->hasFile('item_image')) {
+            $imagePath = $request->file('item_image')->store('item_images', 'public'); // 画像をストレージに保存
+
+            // item_imagesテーブルに画像データを保存
+            ItemImages::create([
+                'item_id' => $item->id,
+                'image_path' => $imagePath,  // 画像のパスを保存
+                'image_url' => asset('storage/' . $imagePath),  // 画像のURLを保存
             ]);
-
-            // 商品データを保存
-            $item = new Item();
-            $item->user_id = Auth::id(); // ログイン中のユーザーIDを設定
-            $item->item_name = $validated['product_name'];
-            $item->condition = $validated['condition'];
-            $item->description = $validated['product_description'];
-            $item->price = $validated['price'];
-            $item->status = 'available'; // 初期状態を設定（例: 'available'）
-            $item->save();
-
-            // 成功したらリダイレクト
-            return redirect()->route('mypage');
         }
+
+        // 成功したらマイページへリダイレクト
+        return redirect()->route('mypage');
+    }
+
 }

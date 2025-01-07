@@ -11,7 +11,7 @@
 
     <header class="header">
         <div class="header__inner">
-            <a class="header__logo" href="">
+            <a class="header__logo" href="/">
                 <img src="{{ asset('images/logo.png') }}" alt="コーチテック" >
             </a>
 
@@ -25,7 +25,13 @@
                     <a href="/login" class="nav__link__login">ログイン</a>
                     <a href="/register" class="nav__link__register">会員登録</a>
                 @else
-                    <a href="/logout" class="nav__link__logout">ログアウト</a>
+                    <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                        ログアウト
+                    </a>
+                    <form id="logout-form" method="POST" action="{{ route('logout') }}" style="display: none;">
+                        @csrf
+                        @method('DELETE')
+                    </form>
                     <a href="/mypage" class="nav__link__mypage">マイページ</a>
                 @endguest
                 <a href="/sell" class="nav__link__sell">出品</a>
@@ -34,115 +40,102 @@
         </div>
     </header>
 
-        <div class="flex__sell-form__heading">
-            <h1>商品の出品</h1>
-        </div>
+    <div class="flex__sell-form__heading">
+        <h1>商品の出品</h1>
+    </div>
 
     <div class="flex__sell__content">
+        <form action="/sell" method="POST" enctype="multipart/form-data">
+            @csrf
 
-    <form action="/sell" method="STORE">
-
-        <div class="form__group">
-            <div class="form__group-content">
-                <h3>商品画像</h3>
-                <div class="form__input--img">
-                <!-- ファイル選択用のカスタムラベル -->
-                    <input class="input--img"type="file" id="product_image" name="product_image" accept="image/*" class="@error('product_image') is-invalid @enderror" hidden/>
-                <label for="product_image" class="file-label">画像を選択する</label>
-                </div>
-                <div class="form__error">
-                <!-- バリデーション追加してから記述 -->
-                </div>
-            </div>
-        </div>
-
-
-        <h2>商品の詳細</h2>
-
-        <div class="form__group">
-            <div class="form__group-content">
-                <h3>カテゴリー</h3>
-                <div class="form__input--text">
-                    <input type="text" id="category" name="category" value="{{ old('category') }}" class="@error('category') is-invalid @enderror"/>
-                </div>
-                <div class="form__error">
-                <!--バリデーション追加してから記述-->
-                </div>
-            </div>
-        </div>
-
-        <div class="form__group">
-            <div class="form__group-content">
-                <h3>商品の状態</h3>
-                <div class="form__input--text">
-                    <input type="text" id="condition" name="condition" value="{{ old('condition') }}" class="@error('condition') is-invalid @enderror"/>
-                </div>
-                <div class="form__error">
-                <!--バリデーション追加してから記述-->
-                </div>
-            </div>
-        </div>
-
-        <h2>商品名と説明</h2>
-
-        <div class="form__group">
-            <div class="form__group-content">
-                <h3>商品名</h3>
-                <div class="form__input--text">
-                    <input type="text" id="product_name" name="product_name" value="{{ old('product_name') }}" class="@error('product_name') is-invalid @enderror"/>
-                </div>
-                <div class="form__error">
-                <!--バリデーション追加してから記述-->
-                </div>
-            </div>
-        </div>
-
-        <div class="form__group">
-            <div class="form__group-content">
-                <h3>商品の説明</h3>
-                <div class="form__input--description">
-                    <textarea 
-                    id="product_description" 
-                    name="product_description" 
-                    class="textarea--description @error('product_description') is-invalid @enderror" 
-                    rows="5">
-                    </textarea>
+            <div class="form__group">
+                <div class="form__group-content">
+                    <h3>商品画像</h3>
+                    <div class="form__input--img">
+                        <!-- ファイル選択用のカスタムラベル -->
+                        <input type="file" id="item_image" name="item_image" accept="image/*" class="@error('item_image') is-invalid @enderror" hidden />
+                        <label for="item_image" class="file-label">画像を選択する</label>
                     </div>
-                <div class="form__error">
-                <!-- バリデーションエラーがあれば表示 -->
+                    @error('item_image')
+                        <div class="form__error">{{ $message }}</div>
+                    @enderror
                 </div>
             </div>
-        </div>
 
+            <h2>商品の詳細</h2>
 
-        <h2>販売価格</h2>
-
-        <div class="form__group">
-            <div class="form__group-content">
-                <h3>販売価格</h3>
-                <div class="form__input--text">
-                    <div class="input-with-symbol">
-                    <input 
-                    type="number" 
-                    id="price" 
-                    name="price" 
-                    value="{{ old('price') }}" 
-                    class="@error('price') is-invalid @enderror"/>
+            <div class="form__group">
+                <div class="form__group-content">
+                    <h3>カテゴリー</h3>
+                    <div class="form__input--text">
+                        <input type="text" id="category" name="category" value="{{ old('category') }}" class="@error('category') is-invalid @enderror" />
                     </div>
-                    </div>
-                    <div class="form__error">
-                    <!-- バリデーション追加してから記述 -->
+                    @error('category')
+                        <div class="form__error">{{ $message }}</div>
+                    @enderror
                 </div>
             </div>
-        </div>
 
+            <div class="form__group">
+                <div class="form__group-content">
+                    <h3>商品の状態</h3>
+                    <div class="form__input--text">
+                        <input type="text" id="condition" name="condition" value="{{ old('condition') }}" class="@error('condition') is-invalid @enderror" />
+                    </div>
+                    @error('condition')
+                        <div class="form__error">{{ $message }}</div>
+                    @enderror
+                </div>
+            </div>
 
-        <div class="form__button">
-            <button class="form__button-submit" type="submit">更新する
-            </button>
-        </div>
+            <h2>商品名と説明</h2>
 
-    </form>
-    </div><!--register__contentの終わり-->
+            <div class="form__group">
+                <div class="form__group-content">
+                    <h3>商品名</h3>
+                    <div class="form__input--text">
+                        <input type="text" id="item_name" name="item_name" value="{{ old('item_name') }}" class="@error('item_name') is-invalid @enderror" />
+                    </div>
+                    @error('item_name')
+                        <div class="form__error">{{ $message }}</div>
+                    @enderror
+                </div>
+            </div>
+
+            <div class="form__group">
+                <div class="form__group-content">
+                    <h3>商品の説明</h3>
+                    <div class="form__input--description">
+                        <textarea id="description" name="description" class="textarea--description @error('description') is-invalid @enderror" rows="5">{{ old('description') }}</textarea>
+                    </div>
+                    @error('description')
+                        <div class="form__error">{{ $message }}</div>
+                    @enderror
+                </div>
+            </div>
+
+            <h2>販売価格</h2>
+
+            <div class="form__group">
+                <div class="form__group-content">
+                    <h3>販売価格</h3>
+                    <div class="form__input--text">
+                        <div class="input-with-symbol">
+                            <input type="number" id="price" name="price" value="{{ old('price') }}" class="@error('price') is-invalid @enderror" />
+                        </div>
+                    </div>
+                    @error('price')
+                        <div class="form__error">{{ $message }}</div>
+                    @enderror
+                </div>
+            </div>
+
+            <div class="form__button">
+                <button class="form__button-submit" type="submit">出品する</button>
+            </div>
+
+        </form>
+    </div><!-- flex__sell__contentの終わり -->
+
 </body>
 </html>

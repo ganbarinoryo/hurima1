@@ -29,14 +29,14 @@ Route::post('/auth/register', [AuthController::class, 'registerSubmit']);
 
 // ログイン・ログアウト機能
 Route::get('/auth/login', [AuthController::class, 'login']);
-Route::post('/auth/logout', [AuthController::class, 'logout']);
+Route::delete('/logout', [AuthController::class, 'logout'])->name('logout');
 
 //  出品ページ
 Route::get('/sell', [SellController::class, 'sell']);
-//Route::store('/sell', [SellController::class, 'store']);
+Route::post('/sell', [SellController::class, 'store']);
 
 // マイページ
-Route::get('/mypage', [MypageController::class, 'mypage']);
+Route::get('/mypage', [MypageController::class, 'mypage'])->name('mypage');
 
 // プロフィール編集ページ
 Route::get('/mypage/profile', [ProfileController::class, 'profile'])->name('profile.form');
