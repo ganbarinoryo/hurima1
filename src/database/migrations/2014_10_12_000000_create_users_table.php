@@ -23,6 +23,7 @@ class CreateUsersTable extends Migration
             $table->string('building_name', 255)->nullable(); // Building name (nullable)
             $table->timestamp('created_at')->notNullable(); // Created at (NOT NULL)
             $table->timestamp('updated_at')->nullable(); // Updated at
+            $table->timestamp('deleted_at')->nullable();
         });
     }
 

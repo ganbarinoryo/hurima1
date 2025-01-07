@@ -66,8 +66,5 @@
 
     </form>
     </div><!--register__contentの終わり-->
-
-    <footer><footer>
-    
 </body>
 </html>

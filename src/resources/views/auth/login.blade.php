@@ -1,4 +1,3 @@
-<!--ログインページ-->
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -6,13 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>coachtechフリマ</title>
     <link rel="stylesheet" href="{{ asset('css/sanitize.css') }}" />
-    <link rel="stylesheet" href="{{ asset('css/login.css?') }}" />
+    <link rel="stylesheet" href="{{ asset('css/login.css') }}" />
 </head>
 <body>
 
     <header class="header">
         <div class="header__inner">
-            <a class="header__logo" href="/">
+            <a class="header__logo" href="">
                 <img src="{{ asset ('images/logo.png') }} " alt="コーチテック" >
             </a>
         </div>
@@ -34,7 +33,11 @@
                     <input type="text" name="email" value="{{ old('email') }}" class="@error('email') is-invalid @enderror"/>
                 </div>
                 <div class="form__error">
-                <!--バリデーション追加してから記述-->
+                @error('email')
+                    <div class="form__error">
+                        <p>{{ $message }}</p>
+                    </div>
+                @enderror
                 </div>
             </div>
         </div>
@@ -46,7 +49,11 @@
                     <input type="password" name="password" value="{{ old('password') }}" class="@error('password') is-invalid @enderror"/>
                 </div>
                 <div class="form__error">
-                <!--バリデーション追加してから記述-->
+                @error('password')
+                    <div class="form__error">
+                        <p>{{ $message }}</p>
+                    </div>
+                @enderror
                 </div>
             </div>
         </div>

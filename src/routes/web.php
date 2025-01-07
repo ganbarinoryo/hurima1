@@ -39,4 +39,5 @@ Route::get('/sell', [SellController::class, 'sell']);
 Route::get('/mypage', [MypageController::class, 'mypage']);
 
 // プロフィール編集ページ
-Route::get('/mypage/profile', [ProfileController::class, 'profile']);
+Route::get('/mypage/profile', [ProfileController::class, 'profile'])->name('profile.form');
+Route::post('/mypage/profile', [ProfileController::class, 'updateProfile'])->name('profile.update');

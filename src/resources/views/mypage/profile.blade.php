@@ -40,39 +40,42 @@
 
     <div class="flex__profile__content">
 
-    <form action="">
+    <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data">
+    @csrf
 
         <div class="form__group">
-    <div class="form__group-content">
-        <div class="form__input--icon">
-            <!-- 商品画像表示エリア（画像が選択されるとここに表示される） -->
-            <div class="icon">
-                <img id="image-icon" src="" alt="選択された画像" style="display: none;"/> <!-- 初期状態は非表示 -->
-            </div>
-            <!-- 画像選択ボタン -->
-            <div class="image-upload">
-                <input type="file" id="product_image" name="product_image" accept="image/*" class="file-input" />
-                <label for="product_image" class="file-label">
-                    画像を選択する
-                </label>
+            <div class="form__group-content">
+                <div class="form__input--icon">
+                    <!-- プレビュー画像表示エリア -->
+                    <div class="icon">
+                        <img id="user_icon_preview" src="" alt="選択された画像" style="display: none;" />
+                    </div>
+                    <!-- 画像選択ボタン -->
+                    <div class="image-upload">
+                        <input type="file" id="user_icon_input" name="user_icon" accept="image/*" class="file-input" />
+                        <label for="user_icon_input" class="file-label">
+                            画像を選択する
+                        </label>
+                    </div>
+                    <div class="form__error">
+                        @error('user_icon')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="form__error">
-            <!-- バリデーションエラーメッセージ -->
-        </div>
-    </div>
-</div>
-
-
 
         <div class="form__group">
             <div class="form__group-content">
                 <h2>ユーザー名</h2>
                 <div class="form__input--text__user_name">
-                    <input type="text" id="user_name" name="user_name" value="{{ old('user_name') }}" class="@error('user_name') is-invalid @enderror"/>
+                    <input type="text" id="user_name" name="user_name" value="{{ old('user_name', $user->user_name) }}" class="@error('user_name') is-invalid @enderror" />
                 </div>
                 <div class="form__error">
-                <!--バリデーション追加してから記述-->
+                    @error('user_name')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
                 </div>
             </div>
         </div>
@@ -81,10 +84,12 @@
             <div class="form__group-content">
                 <h2>郵便番号</h2>
                 <div class="form__input--text">
-                    <input type="text" id="postal_code" name="postal_code" value="{{ old('postal_code') }}" class="@error('postal_code') is-invalid @enderror"/>
+                    <input type="text" id="postal_code" name="postal_code" value="{{ old('postal_code', $user->postal_code) }}" class="@error('postal_code') is-invalid @enderror" />
                 </div>
                 <div class="form__error">
-                <!--バリデーション追加してから記述-->
+                    @error('postal_code')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
                 </div>
             </div>
         </div>
@@ -93,10 +98,12 @@
             <div class="form__group-content">
                 <h2>住所</h2>
                 <div class="form__input--text">
-                    <input type="text" id="address" name="address" value="{{ old('address') }}" class="@error('address') is-invalid @enderror"/>
+                    <input type="text" id="address" name="address" value="{{ old('address', $user->address) }}" class="@error('address') is-invalid @enderror" />
                 </div>
                 <div class="form__error">
-                <!--バリデーション追加してから記述-->
+                    @error('address')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
                 </div>
             </div>
         </div>
@@ -105,42 +112,56 @@
             <div class="form__group-content">
                 <h2>建物名</h2>
                 <div class="form__input--text">
-                    <input type="text" id="building_name" name="building_name" value="{{ old('building_name') }}" class="@error('building_name') is-invalid @enderror"/>
+                    <input type="text" id="building_name" name="building_name" value="{{ old('building_name', $user->building_name) }}" class="@error('building_name') is-invalid @enderror" />
                 </div>
                 <div class="form__error">
-                <!--バリデーション追加してから記述-->
+                    @error('building_name')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
                 </div>
             </div>
         </div>
 
         <div class="form__button">
-            <button class="form__button-submit" type="submit">更新する
-            </button>
+            <button class="form__button-submit" type="submit">更新する</button>
         </div>
-
     </form>
+
+
     </div><!--register__contentの終わり-->
 
     <!-- JavaScriptコード -->
     <script>
-        document.getElementById('product_image').addEventListener('change', function(event) {
-            const file = event.target.files[0];
-            
-            // 画像が選ばれた場合
-            if (file) {
-                const reader = new FileReader();
+    document.getElementById('user_icon_input').addEventListener('change', function(event) {
+        const file = event.target.files[0];
 
-                reader.onload = function(e) {
-                    // 画像が選ばれた場合、imgタグに画像を設定
-                    const imgElement = document.getElementById('image-icon');
-                    imgElement.src = e.target.result;
-                    imgElement.style.display = 'inline'; // 画像を表示
-                };
-
-                reader.readAsDataURL(file); // 画像ファイルを読み込む
+        // 画像が選ばれた場合
+        if (file) {
+            // ファイルタイプをチェック
+            if (!file.type.startsWith('image/')) {
+                alert('画像ファイルを選択してください。');
+                return;
             }
-        });
-    </script>
+
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                // 画像をプレビューに設定
+                const imgElement = document.getElementById('user_icon_preview');
+                imgElement.src = e.target.result;
+                imgElement.style.display = 'inline'; // プレビュー表示
+            };
+
+            reader.readAsDataURL(file); // ファイルを読み込む
+        } else {
+            // 画像が選択されなかった場合
+            const imgElement = document.getElementById('user_icon_preview');
+            imgElement.src = '';
+            imgElement.style.display = 'none';
+        }
+    });
+</script>
+
 
 </body>
 </html>
